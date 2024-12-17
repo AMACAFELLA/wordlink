@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>WordLink</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="game-container">
+      <!-- Menu Screen -->
+      <div id="menu-screen" class="screen active">
+        <h1 class="chalk-text chalk-yellow">WordLink</h1>
+        <p class="chalk-text chalk-blue">
+          Connect words across topics, race against time!
+        </p>
+        <button id="start-btn" class="chalk-button chalk-text chalk-green">
+          Start Game
+        </button>
+        <button id="daily-challenge-btn" class="chalk-button chalk-text chalk-purple">
+          Daily Challenge
+        </button>
+        <button
+          id="leaderboard-btn"
+          class="chalk-button chalk-text chalk-yellow"
+        >
+          Leaderboard
+        </button>
+        <button id="how-to-play-btn" class="chalk-button chalk-text chalk-blue">
+          How to Play
+        </button>
+      </div>
+
+      <!-- Game Screen -->
+      <div id="game-screen" class="screen">
+        <div class="game-stats">
+          <div class="stat">
+            <span class="stat-label chalk-text">Score</span>
+            <span id="score" class="stat-value chalk-text chalk-yellow">0</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label chalk-text">Combo</span>
+            <span id="combo" class="stat-value chalk-text chalk-green">1x</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label chalk-text">Time</span>
+            <span id="time-left" class="stat-value chalk-text chalk-red"
+              >60s</span
+            >
+          </div>
+        </div>
+
+        <div class="topic-section">
+          <button id="hint-btn" class="topic-action-btn hint-btn" disabled title="Costs 2 points">
+            💡
+          </button>
+          <div class="topic-content">
+            <span class="chalk-text chalk-white">Current Topic</span>
+            <h2 id="current-topic" class="chalk-text chalk-green">Animals</h2>
+          </div>
+          <button id="skip-btn" class="topic-action-btn skip-btn" disabled title="Costs 5 points">
+            ⏭️
+          </button>
+        </div>
+
+        <div class="word-input">
+          <input
+            type="text"
+            id="word-input"
+            class="chalk-input"
+            placeholder="Type your word..."
+            autocomplete="off"
+          />
+          <button id="submit-btn" class="chalk-button chalk-text chalk-green">
+            Submit
+          </button>
+        </div>
+
+        <div class="word-chain">
+          <h3 class="chalk-text chalk-white">Word Chain</h3>
+          <div id="chain-container" class="chain-container"></div>
+        </div>
+      </div>
+
+      <!-- Game Over Screen -->
+      <div id="game-over-screen" class="screen">
+        <h1 class="chalk-text chalk-yellow">Game Over!</h1>
+        <img
+          id="player-snoovatar"
+          class="snoovatar"
+          alt="Player Avatar"
+          style="display: none"
+        />
+        <div id="final-score-container">
+          <div class="trophy-icon">🏆</div>
+          <div class="player-info">
+            <div class="player-details">
+              <h2 class="chalk-text chalk-white">Final Score</h2>
+              <p id="final-score" class="chalk-text chalk-green">0</p>
+              <p id="game-over-message" class="chalk-text chalk-yellow"></p>
+            </div>
+          </div>
+        </div>
+        <button id="play-again-btn" class="chalk-button chalk-text chalk-green">
+          Play Again
+        </button>
+      </div>
+
+      <!-- Leaderboard Screen -->
+      <div id="leaderboard-screen" class="screen">
+        <h1 class="chalk-text chalk-yellow">Leaderboard</h1>
+        <div class="modal-tabs">
+          <button
+            class="tab-button active chalk-text chalk-white"
+            data-tab="this-subreddit"
+          >
+            This Subreddit
+          </button>
+          <button
+            class="tab-button chalk-text chalk-white"
+            data-tab="all-subreddits"
+          >
+            All Subreddits
+          </button>
+          <button
+            class="tab-button chalk-text chalk-white"
+            data-tab="daily-challenge"
+          >
+            Daily Challenge
+          </button>
+        </div>
+        <div class="leaderboard-content">
+          <div id="this-subreddit-leaderboard" class="tab-content active">
+            <table class="leaderboard-table">
+              <thead>
+                <tr>
+                  <th class="chalk-text chalk-yellow">Rank</th>
+                  <th class="chalk-text chalk-yellow">Player</th>
+                  <th class="chalk-text chalk-yellow">Score</th>
+                </tr>
+              </thead>
+              <tbody id="this-subreddit-leaderboard-body"></tbody>
+            </table>
+          </div>
+          <div id="all-subreddits-leaderboard" class="tab-content">
+            <table class="leaderboard-table">
+              <thead>
+                <tr>
+                  <th class="chalk-text chalk-yellow">Rank</th>
+                  <th class="chalk-text chalk-yellow">Player</th>
+                  <th class="chalk-text chalk-yellow">Score</th>
+                  <th class="chalk-text chalk-yellow">Subreddit</th>
+                </tr>
+              </thead>
+              <tbody id="all-subreddits-leaderboard-body"></tbody>
+            </table>
+          </div>
+          <div id="daily-challenge-leaderboard" class="tab-content">
+            <table class="leaderboard-table">
+              <thead>
+                <tr>
+                  <th class="chalk-text chalk-yellow">Rank</th>
+                  <th class="chalk-text chalk-yellow">Player</th>
+                  <th class="chalk-text chalk-yellow">Score</th>
+                </tr>
+              </thead>
+              <tbody id="daily-challenge-leaderboard-body"></tbody>
+            </table>
+          </div>
+        </div>
+        <button id="back-to-menu-btn" class="chalk-button chalk-text chalk-red">
+          Back to Menu
+        </button>
+      </div>
+
+      <!-- How to Play Modal -->
+      <div id="how-to-play-modal" class="modal">
+        <div class="modal-content">
+          <h2 class="chalk-text chalk-yellow">How to Play</h2>
+          <div id="how-to-play-content">
+            <div class="rules-section">
+              <div class="rule">
+                <h3 class="chalk-text chalk-yellow">Basic Rules</h3>
+                <p class="chalk-text chalk-white">
+                  Type words that match the current topic. Each new word must
+                  start with the last letter of the previous word.
+                </p>
+              </div>
+              <div class="rule">
+                <h3 class="chalk-text chalk-yellow">Time Challenge</h3>
+                <p class="chalk-text chalk-white">
+                  You have 60 seconds to create the longest word chain possible.
+                  The timer keeps running, so think fast!
+                </p>
+              </div>
+              <div class="rule">
+                <h3 class="chalk-text chalk-yellow">Scoring</h3>
+                <p class="chalk-text chalk-white">
+                  Points are awarded based on word length and your current combo
+                  multiplier. Longer words and maintaining combos will boost
+                  your score!
+                </p>
+              </div>
+            </div>
+          </div>
+          <button class="chalk-button chalk-text chalk-red modal-close">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
